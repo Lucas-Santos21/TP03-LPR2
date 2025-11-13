@@ -15,18 +15,19 @@ public class Pessoa
 
     public Pessoa(String nome, char sexo, int idade)
     {
+        setKp();
         setNome(nome);
         setSexo(sexo);
         setIdade(idade);
     }
 
     //Getters e Setters
-    public static int getKP()
+    public static int getKp()
     {
         return kp;
     }
     
-    public static void setKP()
+    public static void setKp()
     {
         kp++;
     }
