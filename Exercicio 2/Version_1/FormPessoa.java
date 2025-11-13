@@ -1,8 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.List;
-import java.util.ArrayList;
 import javax.swing.*;
+
+import javax.swing.JOptionPane;
 
 public class FormPessoa extends Frame implements ActionListener{
 
@@ -14,6 +14,7 @@ public class FormPessoa extends Frame implements ActionListener{
     Button btnLimpar = new Button("Limpar");
     Button btnMostrar = new Button("Mostrar");
     Button btnSair = new Button("Sair");
+    Pessoa UmaPessoa;
 
     public FormPessoa(){
 
@@ -67,7 +68,34 @@ public class FormPessoa extends Frame implements ActionListener{
 
         if(src == btnOk){
 
+            if(tfNome.getText().trim().isEmpty() || tfSexo.getText().trim().isEmpty() || tfIdade.getText().trim().isEmpty()){
+
+                JOptionPane.showMessageDialog(this, "Os campos Nome, Sexo, e Idade devem ser prechidos");
+                return;
+            } 
+
+            if(!tfSexo.getText().equalsIgnoreCase("M") && !tfSexo.getText().equalsIgnoreCase("F")){
+                
+                JOptionPane.showMessageDialog(this, "O campo Sexo deve ser preenchido com \"F\" ou \"M\"");
+                return;
+            }
+
+            int idade;
+                try {
+                    
+                    idade = Integer.parseInt(tfIdade.getText());
+                } 
+                
+                catch (NumberFormatException ex) {
+                 
+                    JOptionPane.showMessageDialog(this, "O campo Idade deve ser preenchido com número.");
+                    return;
+                }
+
+            char sexo = tfSexo.getText().toUpperCase().charAt(0);
             
+
+            UmaPessoa = new Pessoa(tfNome.getText(), sexo, idade);
 
         }
 
@@ -81,7 +109,9 @@ public class FormPessoa extends Frame implements ActionListener{
 
         if(src == btnMostrar){
 
-            
+            tfNome.setText(UmaPessoa.getNome());
+            tfSexo.setText("");
+            tfIdade.setText("");
 
         }
         
