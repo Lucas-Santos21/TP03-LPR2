@@ -1,13 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
-
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 public class FormPessoa extends Frame implements ActionListener{
 
     TextField tfNumero = new TextField();
     TextField tfNome = new TextField();
-    TextField tfSexo = new TextField();
+    JRadioButton rbMasculino = new JRadioButton("M");
+    JRadioButton rbFeminino = new JRadioButton("F");
+    ButtonGroup grupoSexo = new ButtonGroup();
     TextField tfIdade = new TextField();
     Button btnOk = new Button("OK");
     Button btnLimpar = new Button("Limpar");
@@ -35,9 +36,16 @@ public class FormPessoa extends Frame implements ActionListener{
         Label lblSexo = new Label("Sexo");
         Label lblIdade = new Label("Idade");
 
+        Panel painelSexo = new Panel();
+        painelSexo.add(rbMasculino);
+        painelSexo.add(rbFeminino);
+        
+        grupoSexo.add(rbMasculino);
+        grupoSexo.add(rbFeminino);
+
         painelSuperior.add(lblNumero); painelSuperior.add(tfNumero);
         painelSuperior.add(lblNome); painelSuperior.add(tfNome);
-        painelSuperior.add(lblSexo); painelSuperior.add(tfSexo);
+        painelSuperior.add(lblSexo); painelSuperior.add(painelSexo);
         painelSuperior.add(lblIdade); painelSuperior.add(tfIdade);
 
         //painelInferior
@@ -69,16 +77,10 @@ public class FormPessoa extends Frame implements ActionListener{
 
             try {
                 
-                if(tfNome.getText().trim().isEmpty() || tfSexo.getText().trim().isEmpty() || tfIdade.getText().trim().isEmpty()){
+                if(tfNome.getText().trim().isEmpty() || rbMasculino.isSelected() == false && rbFeminino.isSelected() == false || tfIdade.getText().trim().isEmpty()){
 
                 JOptionPane.showMessageDialog(this, "Os campos Nome, Sexo, e Idade devem ser prechidos");
                 return;
-                } 
-
-                if(!tfSexo.getText().equalsIgnoreCase("M") && !tfSexo.getText().equalsIgnoreCase("F")){
-
-                    JOptionPane.showMessageDialog(this, "O campo Sexo deve ser preenchido com \"F\" ou \"M\"");
-                    return;
                 }
 
                 int idade;
@@ -93,8 +95,7 @@ public class FormPessoa extends Frame implements ActionListener{
                     return;
                 }
 
-                char sexo = tfSexo.getText().toUpperCase().charAt(0);
-
+                char sexo = rbMasculino.isSelected() ? 'M' : 'F';
 
                 UmaPessoa = new Pessoa(tfNome.getText(), sexo, idade);
 
@@ -108,7 +109,7 @@ public class FormPessoa extends Frame implements ActionListener{
 
             tfNumero.setText("");
             tfNome.setText("");
-            tfSexo.setText("");
+            grupoSexo.clearSelection();
             tfIdade.setText("");
 
         }
@@ -123,7 +124,15 @@ public class FormPessoa extends Frame implements ActionListener{
 
             tfNumero.setText(String.valueOf(Pessoa.getKp()));
             tfNome.setText(UmaPessoa.getNome());
-            tfSexo.setText(String.valueOf(UmaPessoa.getSexo()));
+            
+            if (UmaPessoa.getSexo() == 'M') {
+             
+                rbMasculino.setSelected(true);
+            
+            } else {
+                rbFeminino.setSelected(true);
+            }
+
             tfIdade.setText(Integer.toString(UmaPessoa.getIdade()));
 
         }

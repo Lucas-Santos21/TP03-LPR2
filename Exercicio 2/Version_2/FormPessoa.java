@@ -1,13 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
-
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 public class FormPessoa extends Frame implements ActionListener{
 
     TextField tfNumero = new TextField();
     TextField tfNome = new TextField();
-    TextField tfSexo = new TextField();
+    JComboBox<String> cbSexo = new JComboBox<>();
     TextField tfIdade = new TextField();
     Button btnOk = new Button("OK");
     Button btnLimpar = new Button("Limpar");
@@ -37,8 +36,12 @@ public class FormPessoa extends Frame implements ActionListener{
 
         painelSuperior.add(lblNumero); painelSuperior.add(tfNumero);
         painelSuperior.add(lblNome); painelSuperior.add(tfNome);
-        painelSuperior.add(lblSexo); painelSuperior.add(tfSexo);
+        painelSuperior.add(lblSexo); painelSuperior.add(cbSexo);
         painelSuperior.add(lblIdade); painelSuperior.add(tfIdade);
+
+        cbSexo.addItem("Selecione");
+        cbSexo.addItem("M");
+        cbSexo.addItem("F");
 
         //painelInferior
 
@@ -69,16 +72,10 @@ public class FormPessoa extends Frame implements ActionListener{
 
             try {
                 
-                if(tfNome.getText().trim().isEmpty() || tfSexo.getText().trim().isEmpty() || tfIdade.getText().trim().isEmpty()){
+                if(tfNome.getText().trim().isEmpty() || cbSexo.getSelectedIndex() == 0 || tfIdade.getText().trim().isEmpty()){
 
                 JOptionPane.showMessageDialog(this, "Os campos Nome, Sexo, e Idade devem ser prechidos");
                 return;
-                } 
-
-                if(!tfSexo.getText().equalsIgnoreCase("M") && !tfSexo.getText().equalsIgnoreCase("F")){
-
-                    JOptionPane.showMessageDialog(this, "O campo Sexo deve ser preenchido com \"F\" ou \"M\"");
-                    return;
                 }
 
                 int idade;
@@ -93,8 +90,7 @@ public class FormPessoa extends Frame implements ActionListener{
                     return;
                 }
 
-                char sexo = tfSexo.getText().toUpperCase().charAt(0);
-
+                char sexo = cbSexo.getSelectedItem().toString().charAt(0);
 
                 UmaPessoa = new Pessoa(tfNome.getText(), sexo, idade);
 
@@ -108,7 +104,7 @@ public class FormPessoa extends Frame implements ActionListener{
 
             tfNumero.setText("");
             tfNome.setText("");
-            tfSexo.setText("");
+            cbSexo.setSelectedIndex(0);
             tfIdade.setText("");
 
         }
@@ -123,7 +119,7 @@ public class FormPessoa extends Frame implements ActionListener{
 
             tfNumero.setText(String.valueOf(Pessoa.getKp()));
             tfNome.setText(UmaPessoa.getNome());
-            tfSexo.setText(String.valueOf(UmaPessoa.getSexo()));
+            cbSexo.setSelectedItem(String.valueOf(UmaPessoa.getSexo()));
             tfIdade.setText(Integer.toString(UmaPessoa.getIdade()));
 
         }
